@@ -1,6 +1,6 @@
 [
   {
-    "origin": ["http://localhost:3000","https://arcubus-portal-temp.vercel.app/"],
+    "origin": ["http://localhost:3000","https://arcubus-portal-latest.vercel.app/"],
     "method": ["GET", "PUT", "POST"],
     "responseHeader": ["Content-Type"],
     "maxAgeSeconds": 3600
