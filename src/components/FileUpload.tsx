@@ -76,15 +76,25 @@ export default function FileUpload({
 
   return (
     <div className="space-y-4">
-      <input
-        type="file"
-        accept={accept}
-        onChange={(e) => {
-          setFile(e.target.files?.[0] || null);
-          setSuccess(false);
-        }}
-        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-      />
+      <div className="flex items-center space-x-4">
+        <input
+          id="file-upload"
+          type="file"
+          accept={accept}
+          onChange={(e) => {
+            setFile(e.target.files?.[0] || null);
+            setSuccess(false);
+          }}
+          className="hidden"
+        />
+        <label
+          htmlFor="file-upload"
+          className="cursor-pointer py-2 px-4 rounded-full border-0 bg-blue-50 text-blue-700 hover:bg-blue-100 text-sm"
+        >
+          Choose File
+        </label>
+        {file && <span className="text-sm text-gray-700">{file.name}</span>}
+      </div>
 
       <button
         onClick={handleUpload}

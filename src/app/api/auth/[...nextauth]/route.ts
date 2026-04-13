@@ -8,6 +8,7 @@ import { cookies } from "next/headers";
 
 // ⭐ EXPORT THIS
 export const authOptions:NextAuthOptions = {
+    secret: process.env.NEXTAUTH_SECRET,
     providers: [
         CredentialsProvider({
             name: "Credentials",
@@ -117,7 +118,13 @@ export const authOptions:NextAuthOptions = {
     },
 
     session: {
-        strategy: "jwt"
+        strategy: "jwt",
+        maxAge: 60 * 5, // 5 minutes for testing
+        updateAge: 0
+    },
+
+    jwt: {
+        maxAge: 60 * 5
     }
 };
 

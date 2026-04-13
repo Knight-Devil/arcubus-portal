@@ -4,8 +4,13 @@ import type { NextRequest } from 'next/server';
 
 export async function middleware(req: NextRequest) {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    const now = Math.floor(Date.now() / 1000);
     const { pathname } = req.nextUrl;
     const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0] || "127.0.0.1";
+
+    if (token?.exp && token.exp < now) {
+        return NextResponse.redirect(new URL('/login', req.url));
+    }
     const OFFICE_IP = process.env.OFFICE_STATIC_IP;
     // const isLocalhost = clientIp === '::1' || clientIp === '127.0.0.1'; // use during testing only
     const isWFHUser = token?.workFromHome === true;
