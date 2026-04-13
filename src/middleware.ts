@@ -8,7 +8,7 @@ export async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
     const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0] || "127.0.0.1";
 
-    if (token?.exp && token.exp < now) {
+    if (typeof token?.exp === 'number' && token.exp < now) {
         return NextResponse.redirect(new URL('/login', req.url));
     }
     const OFFICE_IP = process.env.OFFICE_STATIC_IP;
