@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import * as XLSX from "xlsx";
-import FileUpload from "@/components/FileUpload";
+import DispositionFileUpload from "@/components/DispositionFileUpload";
 import { useSession } from "next-auth/react";
 
 export default function DispositionPage() {
@@ -30,6 +30,7 @@ export default function DispositionPage() {
                     const workbook = XLSX.read(data, { type: 'array' });
                     const sheet = workbook.Sheets[workbook.SheetNames[0]];
 
+                    // Check metadata cells (A1, A4, A6, A8)
                     const getVal = (cell: string) => sheet[cell]?.v;
                     const criteria = {
                         name: getVal(config.cells.tested_party_name_cell),
@@ -43,6 +44,7 @@ export default function DispositionPage() {
                         return resolve(false);
                     }
 
+                    // Check headers at row 10
                     const rows: any[][] = XLSX.utils.sheet_to_json(sheet, { 
                         header: 1, 
                         range: config.cells.table_header_row - 1 
@@ -52,6 +54,12 @@ export default function DispositionPage() {
                     const missing = config.requiredColumns.filter(col => !headers.includes(col));
                     if (missing.length > 0) {
                         setError(`Missing columns: ${missing.join(", ")}. Ensure headers are on row ${config.cells.table_header_row}.`);
+                        return resolve(false);
+                    }
+
+                    // Check that there is at least one row of data after headers
+                    if (rows.length < 2) {
+                        setError("No data found. Ensure data rows exist after the headers on row 10.");
                         return resolve(false);
                     }
 
@@ -101,12 +109,11 @@ export default function DispositionPage() {
                 )}
 
                 {/* Using the specialized Disposition Component */}
-                <FileUpload
-                    task="disposition"
+                <DispositionFileUpload
                     llm={llm as "gemini" | "gpt-oss"}
                     userEmail={session?.user?.email || ""}
-                    accept=".xlsx"
                     onValidate={validateFormat}
+                    onError={(error) => setError(error)}
                 />
             </div>
         </div>
