@@ -8,6 +8,7 @@ import {
 } from "@/lib/disposition-utils";
 
 interface DispositionFileUploadProps {
+  task?: "disposition";
   llm: "gemini" | "gpt-oss";
   userEmail: string;
   onValidate: (file: File) => Promise<boolean>;
@@ -15,6 +16,7 @@ interface DispositionFileUploadProps {
 }
 
 export default function DispositionFileUpload({
+  task = "disposition",
   llm,
   userEmail,
   onValidate,
@@ -90,7 +92,7 @@ export default function DispositionFileUpload({
     try {
       const contentType =
         file.type || "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-      const fileName = `disposition_${llm}_${userEmail}_${Date.now()}_${file.name}`;
+      const fileName = `${task}_${llm}_${userEmail}_${Date.now()}_${file.name}`;
 
       // Get signed URL
       const res = await fetch("/api/gcs/get-signed-url", {

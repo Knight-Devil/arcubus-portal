@@ -2,6 +2,7 @@
 import { useState } from "react";
 import * as XLSX from "xlsx";
 import DispositionFileUpload from "@/components/DispositionFileUpload";
+import JobCards from "@/components/JobCards";
 import { useSession } from "next-auth/react";
 
 export default function DispositionPage() {
@@ -110,12 +111,15 @@ export default function DispositionPage() {
 
                 {/* Using the specialized Disposition Component */}
                 <DispositionFileUpload
+                    task="disposition"
                     llm={llm as "gemini" | "gpt-oss"}
                     userEmail={session?.user?.email || ""}
                     onValidate={validateFormat}
                     onError={(error) => setError(error)}
                 />
             </div>
+
+            <JobCards userEmail={session?.user?.email || ""} task="disposition" />
         </div>
     );
 }

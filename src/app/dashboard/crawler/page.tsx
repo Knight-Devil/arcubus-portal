@@ -3,6 +3,7 @@
 import { useState } from "react";
 import * as XLSX from "xlsx";
 import FileUpload from "@/components/FileUpload";
+import JobCards from "@/components/JobCards";
 import { useSession } from "next-auth/react";
 
 export default function CrawlerPage() {
@@ -111,15 +112,7 @@ export default function CrawlerPage() {
                     />
                 </div>
 
-                {/* Recent Tasks */}
-                <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-                    <h2 className="text-lg font-semibold mb-4 text-slate-700">
-                        Recent Tasks
-                    </h2>
-                    <p className="text-gray-500 italic">
-                        No tasks found yet.
-                    </p>
-                </div>
+                <JobCards userEmail={session?.user?.email || ""} task="webcrawler" />
 
             </div>
         </div>
