@@ -12,7 +12,7 @@ export default function CrawlerPage() {
     const [error, setError] = useState<string | null>(null);
     const [llm, setLlm] = useState<"gemini" | "gpt-oss">("gemini");
 
-    const requiredColumns = ["Company Name", "Website"];
+    const requiredColumns = ["Company Name", "Website", "Location"];
 
     const validateFormat = async (file: File): Promise<boolean> => {
         return new Promise((resolve) => {
